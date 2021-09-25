@@ -1,0 +1,9 @@
+C:\Users\mukht\source\repos\hw_esww_cryp\bin\Debug\hw_esww_cryp.exe.config
+C:\Users\mukht\source\repos\hw_esww_cryp\bin\Debug\hw_esww_cryp.exe
+C:\Users\mukht\source\repos\hw_esww_cryp\bin\Debug\hw_esww_cryp.pdb
+C:\Users\mukht\source\repos\hw_esww_cryp\obj\Debug\hw_esww_cryp.csprojAssemblyReference.cache
+C:\Users\mukht\source\repos\hw_esww_cryp\obj\Debug\hw_esww_cryp.Form1.resources
+C:\Users\mukht\source\repos\hw_esww_cryp\obj\Debug\hw_esww_cryp.Properties.Resources.resources
+C:\Users\mukht\source\repos\hw_esww_cryp\obj\Debug\hw_esww_cryp.csproj.GenerateResource.cache
+C:\Users\mukht\source\repos\hw_esww_cryp\obj\Debug\hw_esww_cryp.exe
+C:\Users\mukht\source\repos\hw_esww_cryp\obj\Debug\hw_esww_cryp.pdb
