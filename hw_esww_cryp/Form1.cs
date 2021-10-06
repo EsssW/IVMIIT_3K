@@ -16,6 +16,8 @@ namespace hw_esww_cryp
         char[] ENG_alph = "abcdefghijklmnopqrstuvwxyz123456789".ToCharArray();
         char[] RUS_alph = "абвгдеёжзийклмнопрстуфхцчшщъыьэюя123456789".ToCharArray();
         BigInteger step_count;
+        bool exept = false; // перемнная для отлова ошибок 
+        bool isTitle = false;
 
         public Form1()
         {
@@ -23,9 +25,10 @@ namespace hw_esww_cryp
         }
         private void Encrypt_btn_Click(object sender, EventArgs e)
         {
+            exept = false; isTitle = false;
             if (!CheckStepTB()) return; // Если есть какие-либо нарушения в веденном шаге, то выходим
             string result = ""; // Поле для результата шифрации 
-            var input_text = Input_TB.Text.ToLower().ToCharArray(); // Поле для изначального текста
+            var input_text = Input_TB.Text.ToCharArray(); // Поле для изначального текста
             int ch_pos = 0;
             char[] alph;
 
@@ -34,20 +37,27 @@ namespace hw_esww_cryp
             
             for (int i = 0; i < input_text.Length; i++)
             {
-                ch_pos = GetChPosIndex(input_text[i], alph); //Записываем позицию текущей буквы в алфавите
+                if(char.IsLetter(input_text[i])) // если текущий символ - буква
+                    isTitle = input_text[i] == char.ToUpper(input_text[i]) ? true : false; // проверяем регистр текущей буквы
+                ch_pos = GetChPosIndex(char.ToLower(input_text[i]), alph); //Записываем позицию текущей буквы в алфавите в нижнем регистре
                 if (ch_pos != -1)
-                    result += alph[GetNewChPos(ch_pos, step_count, alph.Length)];
-                else
-                    result += input_text[i];
-                
+                {
+                    if(isTitle) // если верхний регистр
+                        result += char.ToUpper( alph[GetNewChPos(ch_pos, step_count, alph.Length)]);
+                    else
+                        result += alph[GetNewChPos(ch_pos, step_count, alph.Length)];
+                }
+                else exept = true;
             }
+            if (exept) MessageBox.Show("Некоторые введенные символы не содержаться в выбранном алфавите! Они не были пропущены в ходе Шифровки");
             Output_tb.Text = result;
         }
         private void Decrypt_btn_Click(object sender, EventArgs e)
         {
-            if (!CheckStepTB()) return; // Если есть какие-либо нарушения в веденном шаге, то вызодим
+            exept = false; isTitle = false;
+            if (!CheckStepTB()) return; // Если есть какие-либо нарушения в веденном шаге, то выходим
             string result = ""; // Поле для результата расшифровки
-            char[] input_text = Input_TB.Text.ToLower().ToCharArray(), alph;
+            char[] input_text = Input_TB.Text.ToCharArray(), alph;
             int ch_pos = 0;
 
             if (RUS_ALPHABET.Checked) alph = RUS_alph; 
@@ -55,12 +65,20 @@ namespace hw_esww_cryp
 
             for (int i = 0; i < input_text.Length; i++)
             {
-                ch_pos = GetChPosIndex(input_text[i], alph);
+                if (char.IsLetter(input_text[i])) // если текущий символ - буква
+                    isTitle = input_text[i] == char.ToUpper(input_text[i]) ? true : false; // проверяем регистр текущей буквы
+                ch_pos = GetChPosIndex(char.ToLower( input_text[i]), alph);
                 if (ch_pos != -1)
-                    result += alph[GetNewChPosDecrypt(ch_pos, step_count, alph.Length)];
-                else
-                    result += input_text[i];
+                {
+                    if (isTitle)
+                        result += char.ToUpper(alph[GetNewChPosDecrypt(ch_pos, step_count, alph.Length)]);
+                    else
+                        result += alph[GetNewChPosDecrypt(ch_pos, step_count, alph.Length)];
+                }
+                else exept = true;
             }
+
+            if (exept) MessageBox.Show("Некоторые введенные символы не содержаться в выбранном алфавите! Они не были пропущены в ходе Расшифровки");
             Output_tb.Text = result;
         }
         public static int GetChPosIndex(char ch, char[] alph)
